@@ -6,22 +6,23 @@ This is the guide for creating your first CDK app with AWS Lambda behind the API
 
 ### Environment Configuration
 
-1. First, get your AWS user credentials.
+- First, get your AWS user credentials.
 
-2. Setup your CLI tools:
+### Setup Environment
 
-   - Install AWS CLI (mac OS - `brew install awscli`; [linux](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html), [win](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html))
-   - When AWS CLI installed:  
-     `aws configure`
-   - Install NodeJS tools ([any OS](https://nodejs.org/en/))
-   - `npm install -g aws-cdk`
+- Install AWS CLI (mac OS - `brew install awscli`; [linux](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html), [win](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html))
+- When AWS CLI installed:  
+  `aws configure`
+- Install NodeJS tools ([any OS](https://nodejs.org/en/))
+- `npm install -g aws-cdk`
 
-3. Generate sample app (can be skipped):
+### Generate sample app (can be skipped)
 
-   - `cdk init app --language typescript`
+- `cdk init app --language typescript`
 
-4. Creating your first Lambda
-   - We need this code:
+### First AWS Lambda
+
+- We need this code:
 
 ```js
 exports.handler = async function (event) {
@@ -51,9 +52,9 @@ const hello = new lambda.Function(this, "HelloHandler", {
 - do `cdk synth`
 - do `cdk bootstrap` (**IMPORTANT!!!**)
 - do `cdk deploy`
-- login to console. Check CloudFormation, Lambda
+- Login to AWS console. Check CloudFormation, Lambda
 
-5. Add API endpoint with API Gateway
+### API endpoint with API Gateway
 
 - `npm install @aws-cdk/aws-apigateway`
 - add code to lib/workshop-stack.ts:
@@ -67,3 +68,16 @@ new apigw.LambdaRestApi(this, "Endpoint", {
 - do `cdk diff`
 - do `cdk synth`
 - do `cdk deploy`
+
+After last command, you will get
+
+```bash
+Outputs:
+WorkshopStack.Endpoint<bla-bla> = https://<bla-bla-bla>.execute-api.<region>.amazonaws.com/prod/
+```
+
+### The End
+
+Congratulations! We deployed API Endpoint with the logic written with AWS Lambda.
+
+The workshop was inpired by this [website](https://cdkworkshop.com/15-prerequisites.html). The code is [here](https://github.com/aws-samples/aws-cdk-intro-workshop). Thank you a lot!
