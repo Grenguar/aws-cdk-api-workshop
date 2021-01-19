@@ -37,7 +37,7 @@ exports.handler = async function (event) {
 - Place it to root on the same level with `bin` and `lib` into file
   `lambda/hello.js`
 - Install: `npm install @aws-cdk/aws-lambda`
-- Add this code:
+- Add this code to `lib/workshop-stack.ts`:
 
 ```js
 const hello = new lambda.Function(this, "HelloHandler", {
