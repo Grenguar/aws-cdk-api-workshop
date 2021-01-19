@@ -37,7 +37,7 @@ exports.handler = async function (event) {
 - Place it to root on the same level with `bin` and `lib` into file
   `lambda/hello.js`
 - Install: `npm install @aws-cdk/aws-lambda`
-- Add this code:
+- Add this code to `lib/workshop-stack.ts`:
 
 ```js
 const hello = new lambda.Function(this, "HelloHandler", {
@@ -46,3 +46,23 @@ const hello = new lambda.Function(this, "HelloHandler", {
   handler: "hello.handler", // file is "hello", function is "handler"
 });
 ```
+
+- do `cdk diff`
+- do `cdk synth`
+- do `cdk deploy`
+- login to console. Check CloudFormation, Lambda
+
+5. Add API endpoint with API Gateway
+
+- `npm install @aws-cdk/aws-apigateway``
+- add code to lib/workshop-stack.ts:
+
+```js
+new apigw.LambdaRestApi(this, "Endpoint", {
+  handler: hello,
+});
+```
+
+- do `cdk diff`
+- do `cdk synth`
+- do `cdk deploy`
