@@ -54,7 +54,7 @@ const hello = new lambda.Function(this, "HelloHandler", {
 
 5. Add API endpoint with API Gateway
 
-- `npm install @aws-cdk/aws-apigateway``
+- `npm install @aws-cdk/aws-apigateway`
 - add code to lib/workshop-stack.ts:
 
 ```js
