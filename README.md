@@ -2,6 +2,8 @@
 
 This is the guide for creating your first CDK app with AWS Lambda behind the API Gateway.
 
+If you want to follow with the empty CDK project, you will need to go to branch - `1-init-cdk-app`. There are other branches related to lambda and api.
+
 ## Steps
 
 ### Environment Configuration
