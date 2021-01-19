@@ -49,6 +49,7 @@ const hello = new lambda.Function(this, "HelloHandler", {
 
 - do `cdk diff`
 - do `cdk synth`
+- do `cdk bootstrap` (**IMPORTANT!!!**)
 - do `cdk deploy`
 - login to console. Check CloudFormation, Lambda
 
