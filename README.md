@@ -88,6 +88,6 @@ Congratulations! We deployed API Endpoint with the logic written with AWS Lambda
 
 `cdk destroy`
 
-This is a good habit to be sure that resources are deleted.
+This is a good habit to be sure that resources are deleted. It will help to avoid unexpected AWS costs. Check also that CloudFormation stack was deleted in the console.
 
 The workshop was inpired by this [website](https://cdkworkshop.com/15-prerequisites.html). The code is [here](https://github.com/aws-samples/aws-cdk-intro-workshop). Thank you a lot!
