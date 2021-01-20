@@ -82,4 +82,10 @@ WorkshopStack.Endpoint<bla-bla> = https://<bla-bla-bla>.execute-api.<region>.ama
 
 Congratulations! We deployed API Endpoint with the logic written with AWS Lambda.
 
+## Important Note!
+
+**Do not forget to do:**
+
+`cdk destroy`
+
 The workshop was inpired by this [website](https://cdkworkshop.com/15-prerequisites.html). The code is [here](https://github.com/aws-samples/aws-cdk-intro-workshop). Thank you a lot!
