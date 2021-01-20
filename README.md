@@ -84,8 +84,10 @@ Congratulations! We deployed API Endpoint with the logic written with AWS Lambda
 
 ## Important Note!
 
-**Do not forget to do:**
+**Do not forget to remove the cloudformation template.**
 
 `cdk destroy`
+
+This is a good habit to be sure that resources are deleted.
 
 The workshop was inpired by this [website](https://cdkworkshop.com/15-prerequisites.html). The code is [here](https://github.com/aws-samples/aws-cdk-intro-workshop). Thank you a lot!
