@@ -1,10 +1,10 @@
-import * as cdk from "@aws-cdk/core";
-import * as lambda from "@aws-cdk/aws-lambda";
-import * as apigw from "@aws-cdk/aws-apigateway";
+import { aws_apigateway as apigw, aws_lambda as lambda } from 'aws-cdk-lib'
+import { Stack } from "aws-cdk-lib";
+import { Construct } from "constructs";
 
-export class WorkshopStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
-    super(scope, id, props);
+export class WorkshopStack extends Stack {
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
 
     // The code that defines your stack goes here
     // defines an AWS Lambda resource
