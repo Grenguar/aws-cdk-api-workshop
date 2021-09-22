@@ -1,8 +1,8 @@
 {
-  "name": "workshop",
+  "name": "infra2",
   "version": "0.1.0",
   "bin": {
-    "workshop": "bin/workshop.js"
+    "infra2": "bin/infra2.js"
   },
   "scripts": {
     "build": "tsc",
@@ -11,22 +11,17 @@
     "cdk": "cdk"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "1.83.0",
     "@types/jest": "^26.0.10",
     "@types/node": "10.17.27",
-    "aws-cdk": "^2.0.0-rc.21",
-    "aws-cdk-lib": "^2.0.0-rc.21",
-    "constructs": "^3.3.149",
     "jest": "^26.4.2",
-    "prettier": "^2.4.1",
     "ts-jest": "^26.2.0",
+    "aws-cdk": "2.0.0-rc.17",
     "ts-node": "^9.0.0",
     "typescript": "~3.9.7"
   },
   "dependencies": {
-    "@aws-cdk/aws-apigateway": "^1.85.0",
-    "@aws-cdk/aws-lambda": "^1.85.0",
-    "@aws-cdk/core": "1.83.0",
+    "aws-cdk-lib": "2.0.0-rc.17",
+    "constructs": "^10.0.0",
     "source-map-support": "^0.5.16"
   }
 }

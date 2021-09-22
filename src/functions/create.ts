@@ -1,12 +1,12 @@
-import { create } from '../dynamo-db-connector';
 import { APIGatewayProxyEventV2, Callback, Context } from 'aws-lambda';
+import { create } from '../dynamo-db-connector';
 
+const uuid = require('uuid');
 
-module.exports.create = (event: APIGatewayProxyEventV2, context: Context, callback: Callback) => {
+exports.handler = async function (event: APIGatewayProxyEventV2, context: Context, callback: Callback) {
   if (typeof event.body === 'string') {
     const bookItem = JSON.parse(event.body);
-    const createBook = create(process.env.table as string, bookItem);
-
+    const createBook = await create(process.env.table as string, bookItem);
     const response = {
       statusCode: 200,
       body: JSON.stringify(createBook)

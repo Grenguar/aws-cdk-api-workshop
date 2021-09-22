@@ -1,7 +1,5 @@
 import { DocumentClient } from 'aws-sdk/clients/dynamodb';
 import { Book } from './models/book';
-import * as uuid from 'uuid';
-
 
 const dynamo = new DocumentClient();
 
@@ -9,7 +7,7 @@ export async function create(table: string, book: Book) {
   const params = {
     TableName: table,
     Item: {
-      id: uuid.v1(),
+      id: Math.random().toString(),
       ...book
     }
   }

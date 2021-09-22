@@ -1,10 +1,11 @@
-import { aws_apigateway as apigw, aws_lambda as lambda, aws_dynamodb as ddb } from 'aws-cdk-lib';
-import { Stack } from 'aws-cdk-lib';
+import { aws_apigateway as apigw, aws_lambda as lambda, aws_dynamodb as ddb, StackProps, Stack } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 
-export class WorkshopStack extends Stack {
-  constructor(scope: Construct, id: string) {
-    super(scope, id);
+export class ApiStack extends Stack {
+  constructor(scope: Construct, id: string, props?: StackProps) {
+    super(scope, id, props);
+
+    // The code that defines your stack goes here
 
     const dynamoTable = new ddb.Table(this, 'BookTable', {
       tableName: 'BookStorage',
@@ -27,7 +28,7 @@ export class WorkshopStack extends Stack {
 
     const createBookIntegration = new apigw.LambdaIntegration(createBookFunction);
 
-    dynamoTable.grant(createBookFunction, 'dynamodb:CreateItem')
+    dynamoTable.grant(createBookFunction, 'dynamodb:CreateItem', 'dynamodb:PutItem')
 
     const api = new apigw.RestApi(this, `BookAPI`, {
       restApiName: `book-rest-api`,
