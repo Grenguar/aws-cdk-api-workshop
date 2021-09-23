@@ -1,6 +1,6 @@
 import { DocumentClient } from 'aws-sdk/clients/dynamodb';
 import { Book } from '../models/book';
-import uuid from 'uuid';
+import { v4 } from "uuid";
 
 const dynamo = new DocumentClient();
 
@@ -8,18 +8,19 @@ export async function create(table: string, book: Book) {
   const params = {
     TableName: table,
     Item: {
-      id: uuid.v4(),
+      id: v4(),
       ...book
     }
   }
-  const dbResponse = await dynamo.put(params).promise();
-  return params.Item;
+  await dynamo.put(params).promise();
 }
 
-export async function get(table: string, key: DocumentClient.Key) {
+export async function get(table: string, id: string) {
   const params = {
     TableName: table,
-    Key: key,
+    Key: {
+      id
+    }
   };
 
   const dbResponse = await dynamo.get(params).promise();

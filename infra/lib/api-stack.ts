@@ -1,5 +1,6 @@
 import { aws_apigateway as apigw, aws_lambda as lambda, aws_dynamodb as ddb, StackProps, Stack } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
+import {RetentionDays} from "aws-cdk-lib/aws-logs";
 
 export class ApiStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -23,17 +24,31 @@ export class ApiStack extends Stack {
       handler: 'create.handler',
       environment: {
         table: dynamoTable.tableName
+      },
+      logRetention: RetentionDays.ONE_WEEK
+    });
+
+    const getBookFunction = new lambda.Function(this, 'GetHandler', {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      code: lambda.Code.fromAsset('../code'),
+      handler: 'get.handler',
+      environment: {
+        table: dynamoTable.tableName
       }
     });
 
     const createBookIntegration = new apigw.LambdaIntegration(createBookFunction);
+    const getBookIntegration = new apigw.LambdaIntegration(getBookFunction);
 
     dynamoTable.grant(createBookFunction, 'dynamodb:CreateItem', 'dynamodb:PutItem')
+    dynamoTable.grant(getBookFunction, 'dynamodb:GetItem');
 
     const api = new apigw.RestApi(this, `BookAPI`, {
       restApiName: `book-rest-api`,
     });
 
-    api.root.addMethod('POST', createBookIntegration)
+    const mainPath = api.root.addResource('books');
+    mainPath.addMethod('POST', createBookIntegration)
+    mainPath.addResource('{id}').addMethod('GET', getBookIntegration)
   }
 }

@@ -6,8 +6,7 @@ export async function handler (event: APIGatewayProxyEventV2, context: Context, 
     const bookItem = JSON.parse(event.body);
     const createBook = await create(process.env.table as string, bookItem);
     const response = {
-      statusCode: 200,
-      body: JSON.stringify(createBook)
+      statusCode: 201,
     }
     callback(null, response);
   }
