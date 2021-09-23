@@ -37,17 +37,30 @@ export class ApiStack extends Stack {
       }
     });
 
-    const createBookIntegration = new apigw.LambdaIntegration(createBookFunction);
-    const getBookIntegration = new apigw.LambdaIntegration(getBookFunction);
+    const listBooksFunction = new lambda.Function(this, 'ListHandler', {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      code: lambda.Code.fromAsset('../code'),
+      handler: 'list.handler',
+      environment: {
+        table: dynamoTable.tableName
+      }
+    });
 
     dynamoTable.grant(createBookFunction, 'dynamodb:CreateItem', 'dynamodb:PutItem')
     dynamoTable.grant(getBookFunction, 'dynamodb:GetItem');
+    dynamoTable.grant(listBooksFunction, 'dynamodb:Scan')
 
     const api = new apigw.RestApi(this, `BookAPI`, {
       restApiName: `book-rest-api`,
     });
 
     const mainPath = api.root.addResource('books');
+
+    const createBookIntegration = new apigw.LambdaIntegration(createBookFunction);
+    const getBookIntegration = new apigw.LambdaIntegration(getBookFunction);
+    const listBooksIntegration = new apigw.LambdaIntegration(listBooksFunction);
+
+    mainPath.addMethod('GET', listBooksIntegration);
     mainPath.addMethod('POST', createBookIntegration)
     mainPath.addResource('{id}').addMethod('GET', getBookIntegration)
   }
