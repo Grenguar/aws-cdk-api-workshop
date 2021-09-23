@@ -19,7 +19,7 @@ export class ApiStack extends Stack {
 
     const createBookFunction = new lambda.Function(this, 'CreateHandler', {
       runtime: lambda.Runtime.NODEJS_14_X,
-      code: lambda.Code.fromAsset('../code/functions'),
+      code: lambda.Code.fromAsset('../code'),
       handler: 'create.handler',
       environment: {
         table: dynamoTable.tableName
