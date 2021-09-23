@@ -1,9 +1,10 @@
 import { DocumentClient } from 'aws-sdk/clients/dynamodb';
 import { Book } from '../models/book';
-const uuid = require('uuid');
+import uuid from 'uuid';
+
 const dynamo = new DocumentClient();
 
-export async function put(table: string, book: Book) {
+export async function create(table: string, book: Book) {
   const params = {
     TableName: table,
     Item: {
