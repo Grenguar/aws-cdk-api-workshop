@@ -37,3 +37,32 @@ export async function list(table: string): Promise<DocumentClient.ItemList> {
   }
   throw new Error('Cannot get all books');
 }
+
+export async function deleteItem(table: string, id: string) {
+  const params = {
+    TableName: table,
+    Key: {
+      id
+    }
+  }
+  await dynamo.delete(params).promise();
+}
+
+export async function update(table: string, id: string, book: Book) {
+  const params = {
+    TableName: table,
+    Key: {
+      id,
+    },
+    ExpressionAttributeValues: {
+      ':title': book.title,
+      ':author': book.author,
+      ':yearPublished': book.yearPublished,
+      ':isbn': book.isbn
+    },
+    UpdateExpression: 'SET title = :title, ' +
+        'author = :author, yearPublished = :yearPublished, isbn = :isbn',
+    ReturnValues: 'UPDATED_NEW',
+  }
+  await dynamo.update(params).promise();
+}

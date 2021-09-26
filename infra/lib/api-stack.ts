@@ -6,8 +6,6 @@ export class ApiStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    // The code that defines your stack goes here
-
     const dynamoTable = new ddb.Table(this, 'BookTable', {
       tableName: 'BookStorage',
       readCapacity: 1,
@@ -46,9 +44,30 @@ export class ApiStack extends Stack {
       }
     });
 
+    const deleteBookFunction = new lambda.Function(this, 'DeleteHandler', {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      code: lambda.Code.fromAsset('../code'),
+      handler: 'delete.handler',
+      environment: {
+        table: dynamoTable.tableName
+      }
+    });
+
+    const updateBookFunction = new lambda.Function(this, 'UpdateHandler', {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      code: lambda.Code.fromAsset('../code'),
+      handler: 'update.handler',
+      environment: {
+        table: dynamoTable.tableName
+      }
+    });
+
+
     dynamoTable.grant(createBookFunction, 'dynamodb:CreateItem', 'dynamodb:PutItem')
     dynamoTable.grant(getBookFunction, 'dynamodb:GetItem');
     dynamoTable.grant(listBooksFunction, 'dynamodb:Scan')
+    dynamoTable.grant(deleteBookFunction, 'dynamodb:DeleteItem')
+    dynamoTable.grant(updateBookFunction, 'dynamodb:UpdateItem')
 
     const api = new apigw.RestApi(this, `BookAPI`, {
       restApiName: `book-rest-api`,
@@ -59,9 +78,16 @@ export class ApiStack extends Stack {
     const createBookIntegration = new apigw.LambdaIntegration(createBookFunction);
     const getBookIntegration = new apigw.LambdaIntegration(getBookFunction);
     const listBooksIntegration = new apigw.LambdaIntegration(listBooksFunction);
+    const deleteBookIntegration = new apigw.LambdaIntegration(deleteBookFunction);
+    const updateBookIntegration = new apigw.LambdaIntegration(updateBookFunction);
+
 
     mainPath.addMethod('GET', listBooksIntegration);
-    mainPath.addMethod('POST', createBookIntegration)
-    mainPath.addResource('{id}').addMethod('GET', getBookIntegration)
+    mainPath.addMethod('POST', createBookIntegration);
+
+    const idPath = mainPath.addResource('{id}');
+    idPath.addMethod('GET', getBookIntegration);
+    idPath.addMethod('DELETE', deleteBookIntegration);
+    idPath.addMethod('PUT', updateBookIntegration);
   }
 }
