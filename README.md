@@ -1,8 +1,16 @@
 # aws-cdk-api-workshop
 
-This is the guide for creating your first CDK app with AWS Lambda behind the API Gateway.
+This is the guide for creating your first CDK app with AWS Lambda behind the API Gateway. The API connected to Dynamo DB table for storing and retrieving books. The Lambdas have granular permissions for the table.
 
-If you want to follow with the empty CDK project, you will need to go to branch - `1-init-cdk-app`. There are other branches related to lambda and api.
+Book Exampe:
+```json
+{
+    "title": "Simulacra and Simulation",
+    "author": "Jean Baudrillard",
+    "yearPublished": "0-472-06521-1",
+    "isbn": "0-676-97376-0"
+}
+```
 
 ## Steps
 
@@ -17,77 +25,18 @@ If you want to follow with the empty CDK project, you will need to go to branch 
   `aws configure`
 - Install NodeJS tools ([any OS](https://nodejs.org/en/))
 - `npm install -g aws-cdk`
+- in the root - `npm i && npm run build` - one will get the code folder needed for infra
+- after that `cd infra && npm i && npx cdk deploy` 
 
-### Generate sample app (can be skipped)
+### Structure
 
-- `cdk init app --language typescript`
-
-### First AWS Lambda
-
-- We need this code:
-
-```js
-exports.handler = async function (event) {
-  console.log("request:", JSON.stringify(event, undefined, 2));
-  return {
-    statusCode: 200,
-    headers: { "Content-Type": "text/plain" },
-    body: `Hello, CDK! You've hit ${event.path}\n`,
-  };
-};
-```
-
-- Place it to root on the same level with `bin` and `lib` into file
-  `lambda/hello.js`
-- Install: `npm install @aws-cdk/aws-lambda`
-- Add this code to `lib/workshop-stack.ts`:
-
-```js
-const hello = new lambda.Function(this, "HelloHandler", {
-  runtime: lambda.Runtime.NODEJS_10_X, // execution environment
-  code: lambda.Code.fromAsset("lambda"), // code loaded from "lambda" directory
-  handler: "hello.handler", // file is "hello", function is "handler"
-});
-```
-
-- do `cdk diff`
-- do `cdk synth`
-- do `cdk bootstrap` (**IMPORTANT!!!**)
-- do `cdk deploy`
-- Login to AWS console. Check CloudFormation, Lambda
-
-### API endpoint with API Gateway
-
-- `npm install @aws-cdk/aws-apigateway`
-- add code to lib/workshop-stack.ts:
-
-```js
-new apigw.LambdaRestApi(this, "Endpoint", {
-  handler: hello,
-});
-```
-
-- do `cdk diff`
-- do `cdk synth`
-- do `cdk deploy`
-
-After last command, you will get
-
-```bash
-Outputs:
-WorkshopStack.Endpoint<bla-bla> = https://<bla-bla-bla>.execute-api.<region>.amazonaws.com/prod/
-```
-
-### The End
-
-Congratulations! We deployed API Endpoint with the logic written with AWS Lambda.
+- `<root>/infra` has the CDK app for deploying the stack
+- `<root>/src/functions` has needed handlers for lambdas
 
 ## Important Note!
 
-**Do not forget to remove the cloudformation template.**
+**Do not forget to remove the stack.**
 
 `cdk destroy`
 
 This is a good habit to be sure that resources are deleted. It will help to avoid unexpected AWS costs. Check also that CloudFormation stack was deleted in the console.
-
-The workshop was inpired by this [website](https://cdkworkshop.com/15-prerequisites.html). The code is [here](https://github.com/aws-samples/aws-cdk-intro-workshop). Thank you a lot!
