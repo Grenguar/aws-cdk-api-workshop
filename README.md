@@ -2,6 +2,8 @@
 
 This is the guide for creating your first CDK app with AWS Lambda behind the API Gateway. The API connected to Dynamo DB table for storing and retrieving books. The Lambdas have granular permissions for the table.
 
+There is an article about this project on [dev.to](https://dev.to/grenguar/how-to-build-serverless-api-with-database-using-aws-cdk-4i2d). If you enjoy it, like it and share. This will help others to know more about CDK.
+
 Book Exampe:
 ```json
 {
