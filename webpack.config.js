@@ -11,6 +11,7 @@ module.exports = {
         use: 'ts-loader',
         exclude: [
           /node_modules/,
+          /infra/,
           path.resolve(__dirname, './infra')
         ],
       },

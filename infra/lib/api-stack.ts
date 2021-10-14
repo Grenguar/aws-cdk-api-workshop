@@ -1,4 +1,11 @@
-import { aws_apigateway as apigw, aws_lambda as lambda, aws_dynamodb as ddb, StackProps, Stack } from 'aws-cdk-lib';
+import {
+  aws_apigateway as apigw,
+  aws_lambda as lambda,
+  aws_dynamodb as ddb,
+  StackProps,
+  Stack,
+  CfnResource
+} from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import {RetentionDays} from "aws-cdk-lib/aws-logs";
 
@@ -32,7 +39,8 @@ export class ApiStack extends Stack {
       handler: 'get.handler',
       environment: {
         table: dynamoTable.tableName
-      }
+      },
+      logRetention: RetentionDays.ONE_WEEK
     });
 
     const listBooksFunction = new lambda.Function(this, 'ListHandler', {
@@ -41,7 +49,8 @@ export class ApiStack extends Stack {
       handler: 'list.handler',
       environment: {
         table: dynamoTable.tableName
-      }
+      },
+      logRetention: RetentionDays.ONE_WEEK
     });
 
     const deleteBookFunction = new lambda.Function(this, 'DeleteHandler', {
@@ -50,7 +59,8 @@ export class ApiStack extends Stack {
       handler: 'delete.handler',
       environment: {
         table: dynamoTable.tableName
-      }
+      },
+      logRetention: RetentionDays.ONE_WEEK
     });
 
     const updateBookFunction = new lambda.Function(this, 'UpdateHandler', {
@@ -59,9 +69,9 @@ export class ApiStack extends Stack {
       handler: 'update.handler',
       environment: {
         table: dynamoTable.tableName
-      }
+      },
+      logRetention: RetentionDays.ONE_WEEK
     });
-
 
     dynamoTable.grant(createBookFunction, 'dynamodb:CreateItem', 'dynamodb:PutItem')
     dynamoTable.grant(getBookFunction, 'dynamodb:GetItem');
