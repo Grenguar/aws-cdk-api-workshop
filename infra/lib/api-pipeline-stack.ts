@@ -19,8 +19,9 @@ export class ApiPipelineStack extends Stack {
                 input: CodePipelineSource.connection('Grenguar/aws-cdk-api-workshop', 'main', {
                     connectionArn: connectionArn,
                 }),
-                commands: ['npm ci', 'npm run build', 'cd infra', 'npm ci', 'npm run build', 'npx cdk synth']
-            })
+                commands: ['npm ci', 'npm run build', 'cd infra', 'npm ci', 'npm run build', 'npx cdk synth', 'mv cdk.out ../']
+            }),
+            selfMutation: true
         });
 
         pipeline.addStage(new MyPipelineAppStage(this, "test"));
