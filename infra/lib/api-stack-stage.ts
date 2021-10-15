@@ -6,6 +6,6 @@ export class MyPipelineAppStage extends Stage {
 
     constructor(scope: Construct, id: string, props?: StageProps) {
         super(scope, id, props);
-        new ApiStack(this, 'LambdaStack');
+        new ApiStack(this, 'APIStack');
     }
 }

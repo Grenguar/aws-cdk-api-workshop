@@ -14,17 +14,17 @@ export class ApiPipelineStack extends Stack {
         const connectionArn = ssm.StringParameter.valueForStringParameter(this, '/serverless-api/git/connection-arn', 1);
 
         const pipeline = new CodePipeline(this, 'Pipeline', {
-            pipelineName: 'MyPipeline',
-            synth: new ShellStep('Synth', {
+            pipelineName: 'ServerlessAPI-Pipeline',
+            synth: new ShellStep('Build', {
                 input: CodePipelineSource.connection('Grenguar/aws-cdk-api-workshop', 'main', {
                     connectionArn: connectionArn,
                 }),
                 commands: ['npm ci', 'npm run build', 'cd infra', 'npm ci', 'npm run build', 'npx cdk synth', 'mv cdk.out ../']
             }),
-            selfMutation: true
+            selfMutation: true,
         });
 
-        pipeline.addStage(new MyPipelineAppStage(this, "test"));
+        pipeline.addStage(new MyPipelineAppStage(this, "Deploy"));
     }
 
 }
